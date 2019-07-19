@@ -1473,6 +1473,8 @@ static UISlider * _volumeSlider;
         playType = PLAY_TYPE_LIVE_RTMP;
     } else if (([videoURL hasPrefix:@"https:"] || [videoURL hasPrefix:@"http:"]) && ([videoURL rangeOfString:@".flv"].length > 0)) {
         playType = PLAY_TYPE_LIVE_FLV;
+    } else if (([videoURL hasPrefix:@"https:"] || [videoURL hasPrefix:@"http:"]) && [videoURL rangeOfString:@".m3u8"].length > 0) {
+        _playType = PLAY_TYPE_VOD_HLS;
     }
     return playType;
 }
