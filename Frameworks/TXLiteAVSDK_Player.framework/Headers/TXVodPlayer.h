@@ -14,6 +14,7 @@
 #import "TXVideoCustomProcessDelegate.h"
 #import "TXBitrateItem.h"
 #import "TXPlayerAuthParams.h"
+#import <AVFoundation/AVFoundation.h>
 
 /// 点播播放器
 @interface TXVodPlayer : NSObject
@@ -40,6 +41,7 @@
 
 /**
  * 点播配置
+ * @see TXVodPlayConfig
  */
 @property(nonatomic, copy) TXVodPlayConfig *config;
 
@@ -47,7 +49,8 @@
 @property BOOL isAutoPlay;
 
 /**
- * 加密HLS的token。设置此值后，播放器自动在URL中的文件名之前增加 voddrm.token.TOKEN
+ * DRM的token
+ * 此token需要从业务Server获取，腾讯云的FairPlay和SimpleAES加密的视频需要设置token才能播放
  */
 @property (nonatomic, strong) NSString *token;
 
@@ -77,10 +80,8 @@
 - (int)startPlay:(NSString *)url;
 
 /**
- * 通过fileid方式播放。
- *
- * fileid的获取方式可参考 [启动播放](https://cloud.tencent.com/document/product/454/12148#step-3.3A-.E5.90.AF.E5.8A.A8.E6.92.AD.E6.94.BE)
- *
+ * 通过fileid方式播放.
+ * @discussion fileid的获取方式可参考 https://cloud.tencent.com/document/product/454/12148#step-3.3A-.E5.90.AF.E5.8A.A8.E6.92.AD.E6.94.BE
  * @param params 认证参数
  * @return 0 = OK
  */
