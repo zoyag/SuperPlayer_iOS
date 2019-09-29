@@ -9,6 +9,8 @@
 
 const NSString *kPlayVideoHost2 = @"playvideo.qcloud.com";
 const NSString *kPlayVideoHost3 = @"playvideo.qcloud.com";
+NSString *const kDrmType_FairPlay = @"FairPlay";
+NSString *const kDrmType_SimpleAES = @"SimpleAES";
 
 
 NSNotificationName kSuperPlayerModelReady = @"kSuperPlayerModelReady";
@@ -82,10 +84,10 @@ NSNotificationName kSuperPlayerModelFail = @"kSuperPlayerModelFail";
 
 - (void)requestPlayInfo:(SuperPlayerView *)playerView
 {
-//    if (self.videoId.version == FileIdV2)
+    if (self.videoId.version == FileIdV2)
         [self getPlayInfoV2:playerView];
-//    if (self.videoId.version == FileIdV3)
-//        [self getPlayInfoV3:playerView];
+    if (self.videoId.version == FileIdV3)
+        [self getPlayInfoV3:playerView];
 }
 
 - (void)getPlayInfoV2:(SuperPlayerView *)playerView {
@@ -220,7 +222,6 @@ NSNotificationName kSuperPlayerModelFail = @"kSuperPlayerModelFail";
     
 }
 
-/*
 - (void)getPlayInfoV3:(SuperPlayerView *)playerView {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSString *url = [NSString stringWithFormat:@"https://%@/getplayinfo/v3/%ld/%@/%@", kPlayVideoHost3, (long)self.videoId.appId, self.videoId.fileId, self.videoId.playDefinition];
@@ -262,14 +263,13 @@ NSNotificationName kSuperPlayerModelFail = @"kSuperPlayerModelFail";
                                             [self.streams addObject:stream];
                                         }
                                     }
-//                                    self.drmType = nil;
-//                                    if ([self canSetDrmType:kDrmType_FairPlay] && self.token) {
-//                                        self.drmType = kDrmType_FairPlay;
-//                                    } else if ([self canSetDrmType:kDrmType_SimpleAES] && self.token) {
-//                                        self.drmType = kDrmType_SimpleAES;
-//                                    } else {
-//                                        self.drmType = nil;
-//                                    }
+                                    if ([self canSetDrmType:kDrmType_FairPlay] && self.token) {
+                                        self.drmType = kDrmType_FairPlay;
+                                    } else if ([self canSetDrmType:kDrmType_SimpleAES] && self.token) {
+                                        self.drmType = kDrmType_SimpleAES;
+                                    } else {
+                                        self.drmType = nil;
+                                    }
 
                                     
                                     NSArray *imageSprites = J2Array([responseObject valueForKeyPath:@"imageSpriteInfo.imageSpriteList"]);
@@ -316,7 +316,7 @@ NSNotificationName kSuperPlayerModelFail = @"kSuperPlayerModelFail";
                                                                                                  @"message": @"请求失败"                                          }];
                                 }];
 }
-*/
+
 
 - (BOOL)canSetDrmType:(NSString *)drmType
 {
@@ -327,17 +327,17 @@ NSNotificationName kSuperPlayerModelFail = @"kSuperPlayerModelFail";
     return NO;
 }
 
-//- (void)setDrmType:(NSString *)drmType
-//{
-//    for (AdaptiveStream *stream in self.streams) {
-//        if (drmType == nil) {
-//            if ([stream.drmType length] == 0) {
-//                _videoURL = stream.url;
-//            }
-//        } else if ([stream.drmType isEqualToString:drmType]) {
-//            _videoURL = stream.url;
-//        }
-//    }
-//    _drmType = drmType;
-//}
+- (void)setDrmType:(NSString *)drmType
+{
+    for (AdaptiveStream *stream in self.streams) {
+        if (drmType == nil) {
+            if ([stream.drmType length] == 0) {
+                _videoURL = stream.url;
+            }
+        } else if ([stream.drmType isEqualToString:drmType]) {
+            _videoURL = stream.url;
+        }
+    }
+    _drmType = drmType;
+}
 @end
