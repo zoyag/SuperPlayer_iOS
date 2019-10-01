@@ -137,6 +137,8 @@
 
 - (CGRect)trackRectForBounds:(CGRect)bounds
 {
-    return CGRectMake([super trackRectForBounds:bounds], CGRectGetWidth(self.frame), 2);
+    CGRect rect = [super trackRectForBounds:bounds];
+    rect.size.height = 2;
+    return rect;
 }
 @end
