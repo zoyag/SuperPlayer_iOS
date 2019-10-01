@@ -134,4 +134,9 @@
                         10);
     
 }
+
+- (CGRect)trackRectForBounds:(CGRect)bounds
+{
+    return CGRectMake(0, 0, CGRectGetWidth(self.frame), 2);
+}
 @end
